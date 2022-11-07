@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 export interface ProductDocument extends mongoose.Document {
     name: string,
     brand: string,
+    category: string[],
     instock: boolean,
     description: string,
     moreDetails: string,
@@ -15,9 +16,19 @@ export interface ProductDocument extends mongoose.Document {
 const ProductSchema = new mongoose.Schema<ProductDocument>({
     name: {
         type: String,
-        required: [true, "product name is required"]
+        required: [true, "name is required"]
     },
     brand: {
+        type: String,
+        required: [true, "brand is required"]
+    },
+    instock: {
+        type: Boolean,
+        default: true
+    },
+    description: {
+        type: String,
+        required: [true, 'description is required']
     }
 })
 
