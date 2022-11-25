@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 
 export interface CategoryDocument extends mongoose.Document{
-    name: string
+    name: string,
+    createdAt: Date,
+    updatedAt: Date,
 }
 
 const CategorySchema = new mongoose.Schema<CategoryDocument>({
@@ -10,7 +12,7 @@ const CategorySchema = new mongoose.Schema<CategoryDocument>({
         required: [true, 'name is required'],
         unique: true
     }
-})
+}, {timestamps: true})
 
 const Category = mongoose.model("Category", CategorySchema)
 

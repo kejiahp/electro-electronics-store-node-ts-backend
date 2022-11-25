@@ -4,6 +4,7 @@ import { CategoryDocument } from "./category-model";
 export interface ProductDocument extends mongoose.Document {
     name: string,
     brand: string,
+    attributes: [object],
     category: CategoryDocument["_id"],
     gallery: string[],
     instock: boolean,
@@ -14,6 +15,24 @@ export interface ProductDocument extends mongoose.Document {
     createdAt: Date,
     updatedAt: Date
 }
+
+
+const attributesItems = new mongoose.Schema({
+    displayValue: String,
+    value: String
+})
+
+const attributesValues = new mongoose.Schema({
+    name: String,
+    items: [attributesItems],
+    type: {
+        type: String,
+        enum: {
+            values: ["text", "swatch"],
+            message: "{VALUE} is not supported"
+        }
+    }
+})
 
 const ProductSchema = new mongoose.Schema<ProductDocument>({
     name: {
@@ -27,6 +46,9 @@ const ProductSchema = new mongoose.Schema<ProductDocument>({
     brand: {
         type: String,
         required: [true, "brand is required"]
+    },
+    attributes: {
+        type: [attributesValues],
     },
     gallery: {
         type: [String],

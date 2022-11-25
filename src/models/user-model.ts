@@ -3,14 +3,15 @@ import bcrypt from "bcrypt"
 import config from "config"
 
 export interface UserDocument extends mongoose.Document {
-    firstname: string,
-    lastname: string,
-    email: string,
-    password: string,
-    isActive: boolean,
-    isAdmin: boolean,
-    createdAt: Date,
+    firstname: string
+    lastname: string
+    email: string
+    password: string
+    isActive: boolean
+    isAdmin: boolean
+    createdAt: Date
     updatedAt: Date
+    comparePassword(password: string):Promise<boolean>
 }
 
 const UserSchema = new mongoose.Schema<UserDocument>({
@@ -58,6 +59,15 @@ UserSchema.pre('save', async function (next){
 
     return next()
 })
+
+UserSchema.methods.comparePassword = async function(password: string) {
+    try{
+        return await bcrypt.compare(password, this.password)
+    }catch(e){
+        return false
+    }
+
+}
 
 const User = mongoose.model("User", UserSchema)
 

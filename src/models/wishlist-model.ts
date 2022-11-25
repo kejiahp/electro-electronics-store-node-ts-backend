@@ -6,4 +6,4 @@ export interface WishListDocument extends mongoose.Document{
 
 }
 
-const WishListSchema = new mongoose.Schema({})
+const WishListSchema = new mongoose.Schema({},{timestamps: true})
