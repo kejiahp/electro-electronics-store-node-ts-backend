@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import config from "config";
 import { sessionSchemaInput } from "../schemas/session-schema";
-import { createSessionService } from "../services/session-service";
+import { createSessionService, getUserSessionService } from "../services/session-service";
 import { validateLoginCredentials } from "../services/user-service";
 import { signJwt } from "../utils/jwt-utils";
-import logger from "../utils/logger";
 
 
 export const createSessionController = async (req: Request<{}, {}, sessionSchemaInput["body"]>, res: Response) => {
@@ -17,7 +16,7 @@ export const createSessionController = async (req: Request<{}, {}, sessionSchema
         return res.status(401).send("Invalid Credentials")
     }
 
-    //creating session for loged in user
+    //creating session for logged in user
     const session = await createSessionService({userId:user._id, userAgent: req.get("user-agent") || ""})
 
     if(!session) {
@@ -31,4 +30,15 @@ export const createSessionController = async (req: Request<{}, {}, sessionSchema
     const refreshToken = signJwt({...user, session: session._id}, {expiresIn: config.get<string>("refreshTokenTtl")})
 
     return res.status(200).send({accessToken, refreshToken})
+}
+
+export const getUserSessionController = async (req: Request, res: Response) => {
+    const userId = res.locals.user._id
+    const session = await getUserSessionService(userId)
+
+    if(!session) {
+        return res.status(404).send("no session found")
+    }
+
+    return res.status(200).send(session)
 }

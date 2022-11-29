@@ -1,6 +1,8 @@
 import { Express, Request, Response } from "express"
-import { createSessionController } from "./controllers/session-controller"
+import { createSessionController, getUserSessionController } from "./controllers/session-controller"
 import { createUserController } from "./controllers/user-controller"
+import { deserializeUser } from "./middleware/deserializeUser"
+import { requireUser } from "./middleware/requireUser"
 import { validateRequest } from "./middleware/validateRequest"
 import { sessionSchema } from "./schemas/session-schema"
 import { createUserSchema } from "./schemas/user-schema"
@@ -13,6 +15,8 @@ const routes = (app:Express) => {
     app.post("/api/users", validateRequest(createUserSchema), createUserController)
 
     app.post("/api/login", validateRequest(sessionSchema), createSessionController)
+
+    app.get("/api/session", [deserializeUser,requireUser,getUserSessionController])
 }
 
 export default routes

@@ -19,7 +19,7 @@ const SessionSchema = new mongoose.Schema<SessionDocument>({
     },
     valid: {
         type: Boolean,
-        default: false
+        default: true
     }
 },{timestamps:true})
 
