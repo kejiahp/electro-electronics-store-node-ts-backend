@@ -1,5 +1,5 @@
 import User, { UserDocument } from "../models/user-model";
-import { DocumentDefinition } from "mongoose";
+import { DocumentDefinition, FilterQuery } from "mongoose";
 import loadash, { omit } from "lodash"
 
 export const createUserService = async (input: DocumentDefinition<Omit<UserDocument, "createdAt"|"updatedAt"|"isActive"|"isAdmin">>) => {
@@ -25,4 +25,8 @@ export const validateLoginCredentials = async ({email, password}: {email:string,
     }
 
     return omit(user.toJSON(), "password")
+}
+
+export const findUser = async (query: FilterQuery<UserDocument>) => {
+    return await User.findOne(query).lean()
 }

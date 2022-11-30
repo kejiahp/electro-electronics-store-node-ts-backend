@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import config from "config";
 import { sessionSchemaInput } from "../schemas/session-schema";
-import { createSessionService, getUserSessionService } from "../services/session-service";
+import { createSessionService, getUserSessionService, invalidateUserSession } from "../services/session-service";
 import { validateLoginCredentials } from "../services/user-service";
 import { signJwt } from "../utils/jwt-utils";
 
@@ -41,4 +41,20 @@ export const getUserSessionController = async (req: Request, res: Response) => {
     }
 
     return res.status(200).send(session)
+}
+
+export const deleteSessionController = async(req:Request, res:Response) => {
+    const sessionId = res.locals.user.session
+
+    const isInvalidated = await invalidateUserSession({_id: sessionId}, {valid:false})
+
+
+    if(!isInvalidated) {
+        return res.status(500).send("can not delete session")
+    }
+
+    return res.status(200).send({
+        accessToken: null,
+        refreshToken: null
+    })
 }
