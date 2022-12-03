@@ -17,11 +17,6 @@ export interface ProductDocument extends mongoose.Document {
 }
 
 
-// const attributesItems = new mongoose.Schema({
-//     displayValue: String,
-//     value: String
-// })
-
 const attributesValues = new mongoose.Schema({
     name: {
         type: String,
@@ -54,9 +49,8 @@ const ProductSchema = new mongoose.Schema<ProductDocument>({
         type: String,
         required: [true, "brand is required"]
     },
-    attributes: {
-        type: [attributesValues],
-    },
+    attributes: [attributesValues]
+    ,
     gallery: {
         type: [String],
         required: [true, 'image is required']
@@ -74,7 +68,8 @@ const ProductSchema = new mongoose.Schema<ProductDocument>({
         required: [true, 'description is required']
     },
     moreDetails: {
-        type: String
+        type: String,
+        default: ""
     },
     discount: {
         type: Number,

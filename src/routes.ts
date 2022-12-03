@@ -1,6 +1,6 @@
 import { Express, Request, Response } from "express"
-import { addCategoryController } from "./controllers/category-controller"
-import { createProductController } from "./controllers/product-controller"
+import { addCategoryController, getCategoriesController } from "./controllers/category-controller"
+import { createProductController, getAllProductController } from "./controllers/product-controller"
 import { createSessionController, deleteSessionController, getUserSessionController } from "./controllers/session-controller"
 import { createUserController } from "./controllers/user-controller"
 import { deserializeUser } from "./middleware/deserializeUser"
@@ -31,9 +31,15 @@ const routes = (app:Express) => {
     //PRODUCT ROUTES
     //create product category
     app.post('/api/category', [deserializeUser, requireUser, validateRequest(categorySchema), addCategoryController])
+
+    //get category route
+    app.get('/api/category', getCategoriesController)
+
     //create product
-    // app.post('/api/product', [deserializeUser, requireUser, validateRequest(createProductSchema), createProductController])
-    app.post('/api/product', [validateRequest(createProductSchema), createProductController])
+    app.post('/api/product', [deserializeUser, requireUser, validateRequest(createProductSchema), createProductController])
+    
+    //get all products
+    app.get('/api/product', getAllProductController)
 }
 
 export default routes

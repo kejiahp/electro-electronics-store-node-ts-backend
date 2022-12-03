@@ -11,11 +11,10 @@ export const addCategoryService = async (name:DocumentDefinition<Omit<CategoryDo
     }
 }
 
-export const getCategoryId = async (query: FilterQuery<CategoryDocument>) => {
+export const getCategoriesService = async () => {
     try{
-        const product = await Category.findOne({query})
-
-        return product?._id
+        const product = await Category.find({})
+        return product
     }catch(e:any){
         return false
     }

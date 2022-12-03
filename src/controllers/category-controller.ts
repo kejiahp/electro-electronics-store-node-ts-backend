@@ -1,6 +1,6 @@
 import { Response, Request } from 'express'
 import { categoryInput } from '../schemas/category-schema'
-import { addCategoryService } from '../services/category-service'
+import { addCategoryService, getCategoriesService } from '../services/category-service'
 
 export const addCategoryController = async (req: Request<{},{},categoryInput["body"]>, res:Response) => {
     const isAdmin = res.locals.user.isAdmin
@@ -14,4 +14,12 @@ export const addCategoryController = async (req: Request<{},{},categoryInput["bo
     if(!category) return res.status(500).send("unable to create category")
 
     return res.status(201).send(category)
+}
+
+export const getCategoriesController = async (req: Request, res:Response) => {
+    const categories = await getCategoriesService()
+
+    if(!categories) return res.status(500).send("can not get categories")
+
+    return res.status(200).send(categories)
 }
