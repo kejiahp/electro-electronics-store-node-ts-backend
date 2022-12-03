@@ -9,28 +9,35 @@ export interface ProductDocument extends mongoose.Document {
     gallery: string[],
     instock: boolean,
     description: string,
-    moreDetails: string,
-    discount: number,
+    moreDetails?: string,
+    discount?: number,
     price: number,
     createdAt: Date,
     updatedAt: Date
 }
 
 
-const attributesItems = new mongoose.Schema({
-    displayValue: String,
-    value: String
-})
+// const attributesItems = new mongoose.Schema({
+//     displayValue: String,
+//     value: String
+// })
 
 const attributesValues = new mongoose.Schema({
-    name: String,
-    items: [attributesItems],
+    name: {
+        type: String,
+        required: [true, "attriute name is required"]
+    },
+    items: [{
+        displayValue: String,
+        value: String
+    }],
     type: {
         type: String,
         enum: {
             values: ["text", "swatch"],
             message: "{VALUE} is not supported"
-        }
+        },
+        required: [true, "attriute type is required"]
     }
 })
 
