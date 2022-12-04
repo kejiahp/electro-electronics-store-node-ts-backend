@@ -25,7 +25,7 @@ const CartSchema = new mongoose.Schema<CartDocument>({
         type: Number,
         required: [true, "cartTotal is required"]
     }
-})
+},{timestamps: true})
 
 const Cart = mongoose.model('Cart', CartSchema)
 

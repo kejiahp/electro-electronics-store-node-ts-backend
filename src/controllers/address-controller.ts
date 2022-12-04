@@ -5,9 +5,9 @@ import { createAddressService, findAddress, updateAddressService } from '../serv
 export const createAddressController = async (req:Request<{},{}, createAddressInput["body"]>, res:Response) => {
     const userId = res.locals.user._id
 
-    if(String(userId) !== req.body.userId) return res.status(401).send("Unauthorized to create address")
+    const input = {...req.body, userId}
 
-    const address = await createAddressService(req.body)
+    const address = await createAddressService(input)
 
     if(!address) return res.status(500).send("can't create address")
 

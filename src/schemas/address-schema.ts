@@ -2,9 +2,6 @@ import zod from 'zod'
 
 export const AddressSchema = zod.object({
     body: zod.object({
-        userId: zod.string({
-            required_error: "userId is required"
-        }),
         state: zod.string({
             required_error: "state is required"
         }),

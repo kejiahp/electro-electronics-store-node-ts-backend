@@ -2,6 +2,7 @@ import { Express, Request, Response } from "express"
 import { createAddressController, getAddressController, updateAddressController } from "./controllers/address-controller"
 import { getUserCartController, updateUserCartController } from "./controllers/cart-controller"
 import { addCategoryController, getCategoriesController } from "./controllers/category-controller"
+import { createOrderController, getAllOrdersController } from "./controllers/order-controller"
 import { createProductController, deleteProductController, getAllProductController, getProductController, updateProductController } from "./controllers/product-controller"
 import { createSessionController, deleteSessionController, getUserSessionController } from "./controllers/session-controller"
 import { createUserController } from "./controllers/user-controller"
@@ -11,6 +12,7 @@ import { validateRequest } from "./middleware/validateRequest"
 import { AddressSchema } from "./schemas/address-schema"
 import { CartSchema } from "./schemas/cart-schema"
 import { categorySchema } from "./schemas/category-schema"
+import { OrderSchema } from "./schemas/order-schema"
 import { createProductSchema, deleteProductSchema, getProductSchema, updateProductSchema } from "./schemas/product-schema"
 import { sessionSchema } from "./schemas/session-schema"
 import { createUserSchema } from "./schemas/user-schema"
@@ -69,6 +71,15 @@ const routes = (app:Express) => {
 
     //update user cart
     app.patch('/api/cart', [deserializeUser, requireUser, validateRequest(CartSchema), updateUserCartController])
+
+
+    //ORDER ROUTES
+
+    //get all user orders
+    app.get('/api/order', [deserializeUser, requireUser, getAllOrdersController])
+
+    //create order
+    app.post('/api/order', [deserializeUser, requireUser, validateRequest(OrderSchema), createOrderController])
 }
 
 export default routes

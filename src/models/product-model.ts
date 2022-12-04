@@ -2,17 +2,17 @@ import mongoose from "mongoose";
 import { CategoryDocument } from "./category-model";
 
 export interface ProductDocument extends mongoose.Document {
-    name: string,
-    brand: string,
-    attributes: [object],
-    category: CategoryDocument["_id"],
-    gallery: string[],
-    instock: boolean,
-    description: string,
-    moreDetails?: string,
-    discount?: number,
-    price: number,
-    createdAt: Date,
+    name: string
+    brand: string
+    attributes: [object]
+    category: CategoryDocument["_id"]
+    gallery: string[]
+    instock: boolean
+    description: string
+    moreDetails?: string
+    discount?: number
+    price: number
+    createdAt: Date
     updatedAt: Date
 }
 
