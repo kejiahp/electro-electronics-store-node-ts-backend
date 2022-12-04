@@ -6,6 +6,7 @@ import { createOrderController, getAllOrdersController } from "./controllers/ord
 import { createProductController, deleteProductController, getAllProductController, getProductController, updateProductController } from "./controllers/product-controller"
 import { createSessionController, deleteSessionController, getUserSessionController } from "./controllers/session-controller"
 import { createUserController } from "./controllers/user-controller"
+import { getUserWishListController, updateUserWishListController } from "./controllers/wishlist-controller"
 import { deserializeUser } from "./middleware/deserializeUser"
 import { requireUser } from "./middleware/requireUser"
 import { validateRequest } from "./middleware/validateRequest"
@@ -16,6 +17,7 @@ import { OrderSchema } from "./schemas/order-schema"
 import { createProductSchema, deleteProductSchema, getProductSchema, updateProductSchema } from "./schemas/product-schema"
 import { sessionSchema } from "./schemas/session-schema"
 import { createUserSchema } from "./schemas/user-schema"
+import { WishListSchema } from "./schemas/wishlist-schema"
 
 const routes = (app:Express) => {
     app.get("/", (req: Request, res: Response)=>{
@@ -80,6 +82,11 @@ const routes = (app:Express) => {
 
     //create order
     app.post('/api/order', [deserializeUser, requireUser, validateRequest(OrderSchema), createOrderController])
+
+    //WISHLIST ROUTES
+    app.get('/api/wishlist', [deserializeUser, requireUser, getUserWishListController])
+
+    app.patch('/api/wishlist', [deserializeUser, requireUser, validateRequest(WishListSchema),updateUserWishListController])
 }
 
 export default routes

@@ -1,7 +1,8 @@
 import {Request, Response} from 'express'
+import { OrderInput } from '../schemas/order-schema'
 import { createOrderService, getAllOrdersService } from '../services/order-service'
 
-export const createOrderController = async (req:Request, res: Response) => {
+export const createOrderController = async (req:Request<{},{},OrderInput["body"]>, res: Response) => {
     const userId = res.locals.user._id
 
     const input = {...req.body, userId}
