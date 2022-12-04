@@ -1,13 +1,15 @@
 import { Express, Request, Response } from "express"
+import { createAddressController, getAddressController, updateAddressController } from "./controllers/address-controller"
 import { addCategoryController, getCategoriesController } from "./controllers/category-controller"
-import { createProductController, getAllProductController } from "./controllers/product-controller"
+import { createProductController, deleteProductController, getAllProductController, getProductController, updateProductController } from "./controllers/product-controller"
 import { createSessionController, deleteSessionController, getUserSessionController } from "./controllers/session-controller"
 import { createUserController } from "./controllers/user-controller"
 import { deserializeUser } from "./middleware/deserializeUser"
 import { requireUser } from "./middleware/requireUser"
 import { validateRequest } from "./middleware/validateRequest"
+import { AddressSchema } from "./schemas/address-schema"
 import { categorySchema } from "./schemas/category-schema"
-import { createProductSchema } from "./schemas/product-schema"
+import { createProductSchema, deleteProductSchema, getProductSchema, updateProductSchema } from "./schemas/product-schema"
 import { sessionSchema } from "./schemas/session-schema"
 import { createUserSchema } from "./schemas/user-schema"
 
@@ -32,7 +34,7 @@ const routes = (app:Express) => {
     //create product category
     app.post('/api/category', [deserializeUser, requireUser, validateRequest(categorySchema), addCategoryController])
 
-    //get category route
+    //get all categories route
     app.get('/api/category', getCategoriesController)
 
     //create product
@@ -40,6 +42,22 @@ const routes = (app:Express) => {
     
     //get all products
     app.get('/api/product', getAllProductController)
+
+    //get single product
+    app.get('/api/product/:productId', validateRequest(getProductSchema),getProductController)
+
+    //update single product
+    app.patch('/api/product/:productId', [deserializeUser, requireUser, validateRequest(updateProductSchema), updateProductController])
+
+    //delete product
+    app.delete('/api/product/:productId', [deserializeUser, requireUser, validateRequest(deleteProductSchema),deleteProductController])
+
+    //ADDRESS ROUTES
+    app.get('/api/address', [deserializeUser, requireUser, getAddressController])
+
+    app.post('/api/address', [deserializeUser, requireUser, validateRequest(AddressSchema), createAddressController])
+
+    app.patch('/api/address', [deserializeUser, requireUser, updateAddressController])
 }
 
 export default routes

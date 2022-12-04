@@ -7,8 +7,8 @@ export interface AddressDocument extends mongoose.Document{
     city: string,
     country: string,
     addressDesc: string,
-    phoneNumber1: number,
-    phoneNumber2: number,
+    phoneNumber1: string,
+    phoneNumber2?: string,
     createdAt: Date,
     updatedAt: Date
 }
@@ -35,11 +35,11 @@ const AddressSchema = new mongoose.Schema<AddressDocument>({
         required: [true, 'country is required']
     },
     phoneNumber1: {
-        type: Number,
+        type: String,
         required: [true, 'phonenumber1 must be provided']
     },
     phoneNumber2: {
-        type: Number,
+        type: String,
         required: false
     }
 }, {timestamps: true})

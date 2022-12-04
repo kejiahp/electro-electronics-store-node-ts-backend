@@ -50,6 +50,12 @@ const params = {
     })
 }
 
+// const query = {
+//     query: zod.object({
+        
+//     })
+// }
+
 export const createProductSchema = zod.object({
     ...payload
 })

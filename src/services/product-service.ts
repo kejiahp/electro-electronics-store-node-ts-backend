@@ -1,16 +1,22 @@
-import { DocumentDefinition, UpdateQuery } from "mongoose"
+import { DocumentDefinition, QueryOptions, UpdateQuery } from "mongoose"
 import Product, { ProductDocument } from "../models/product-model"
 
 export const createProductService = async (input: DocumentDefinition<Omit<ProductDocument, "createdAt" | "updatedAt">>) => {
     try{
         const product = await Product.create(input)
-        return product
+        return product.toJSON()
     }catch(e:any){
         console.log(e)
         return false
     }
 }
-export const getProductService = async (id:string) => {}
+export const getProductService = async (id:string) => {
+    try{
+        return await Product.findById(id)
+    }catch(e){
+        return false
+    }
+}
 
 export const getAllProductService = async () => {
     try{
@@ -20,6 +26,20 @@ export const getAllProductService = async () => {
     }
 }
 
-export const updateProductService = async (id:string,query:UpdateQuery<ProductDocument>) => {}
+export const updateProductService = async (id:string,query:UpdateQuery<ProductDocument>, options:QueryOptions) => {
+    try{
+        const product = await Product.findByIdAndUpdate(id, query, options)
 
-export const deleteProductService = async (id:string) => {}
+        return product?.toJSON()
+    }catch(e){
+        return false
+    }
+}
+
+export const deleteProductService = async (id:string) => {
+    try{
+        return await Product.findByIdAndDelete(id)
+    }catch(e){
+        return false
+    }
+}
