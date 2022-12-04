@@ -28,6 +28,7 @@ export const updateAddressController = async (req:Request, res:Response) => {
     const userId = res.locals.user._id
 
     const address = await findAddress({userId})
+    
 
     if(!address) return res.status(404).send("no adddress found to be updated")
 

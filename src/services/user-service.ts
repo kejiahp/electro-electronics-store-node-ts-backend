@@ -2,7 +2,7 @@ import User, { UserDocument } from "../models/user-model";
 import { DocumentDefinition, FilterQuery } from "mongoose";
 import loadash, { omit } from "lodash"
 
-export const createUserService = async (input: DocumentDefinition<Omit<UserDocument, "createdAt"|"updatedAt"|"isActive"|"isAdmin">>) => {
+export const createUserService = async (input: DocumentDefinition<Omit<UserDocument, "createdAt"|"updatedAt"|"isActive"|"isAdmin"|"comparePassword">>) => {
     try{
         const user = await User.create(input)
         return loadash.omit(user.toJSON(), "password")
